@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Recipe Finder</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.0.min.js"></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="javascript:loadMainFragment();" class="navbar-brand"><i class="fa fa-cutlery"></i>&nbsp;&nbsp;Recipe Finder</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="javascript:loadFridgeFragment();">Fridge</a></li>
+            <li><a href="javascript:loadRecipesFragment();">Recipes</a></li>
+            <li><a href="javascript:loadSuggestionFragment();">Suggestion</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="new-body">
+      <!-- dynamic loaded -->
+    </div>
+
+  </body>
+
+  <script src="js/underscore-min.js"></script>
+  <script src="js/handlebars-v1.3.0.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        loadMainFragment();
+    });
+  </script>
+
+  <script id="items-template" type="text/html">
+    {{#.}}
+    <tr>
+      <td>{{item}}</td>
+      <td>{{amount}}</td>
+      <td>{{unit}}</td>
+      <td>{{useBy}}</td>
+    </tr>
+    {{/.}}
+  </script>
+
+  <script id="recipe-template" type="text/html">
+    <div class="panel-heading">
+      <h3 class="panel-title"><i class="fa fa-arrow-circle-o-right"></i> {{name}}</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="no-bullets">
+        {{#ingredients}}
+        <li><i class="fa fa-check"></i> {{amount}} {{unit}} of <strong>{{item}}</strong></li>
+        {{/ingredients}}
+      </ul>
+    </div>
+  </script>
+
+  <script id="recipe-list-template" type="text/html">
+    <div class="panel-group" id="accordion">
+      <ul class="list-group">
+        {{#.}}
+        <li class="list-group-item">
+          <a class="recipe-name" data-toggle="collapse" data-parent="accordion" href="#collapse-{{@index}}">
+            <i class="fa fa-arrow-circle-o-right"></i> {{name}}
+          </a>
+          <span class="badge recipe">{{ingredients.length}}</span>
+          <div id="collapse-{{@index}}" class="panel-collapse collapse">
+            <ul class="no-bullets">
+              {{#ingredients}}
+              <li><i class="fa fa-check"></i> {{amount}} {{unit}} of <strong>{{item}}</strong></li>
+              {{/ingredients}}
+            </ul>
+          </div>
+        </li>
+        {{/.}}
+      </ul>
+    </div>
+  </script>
+</html>
