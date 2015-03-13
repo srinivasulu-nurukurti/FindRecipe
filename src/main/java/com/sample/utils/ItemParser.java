@@ -22,14 +22,24 @@ public final class ItemParser {
 	private static String getItem(String item) {
 		if (item == null || item.trim().length() == 0)
 			throw new IllegalArgumentException(" Expected item name ");
+		System.out.println(item.trim());
 		return item.trim();
 	}
 
 	private static int getAmount(String amount) {
 
+		int amt;
 		if (amount == null || amount.trim().length() == 0)
 			throw new IllegalArgumentException(" Expected amount for item ");
-		return Integer.parseInt(amount.trim());
+
+		try {
+			amt = Integer.parseInt(amount.trim());
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e.getMessage());
+		}
+		
+		System.out.println(amt);
+		return amt;
 	}
 
 	private static Unit getUnit(String unit) {
@@ -37,6 +47,9 @@ public final class ItemParser {
 		if (unit == null || unit.trim().length() == 0)
 			throw new IllegalArgumentException(
 					" Expected no of units for item ");
+		
+		System.out.println(Unit.valueOf(unit.trim().toUpperCase()));
+		
 		return Unit.valueOf(unit.trim().toUpperCase());
 	}
 
@@ -46,9 +59,10 @@ public final class ItemParser {
 			throw new IllegalArgumentException(" Expected date for item ");
 
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("d/M/yyyy");
+		
+		System.out.println(formatter.parseLocalDate(date.trim()));
+		
 		return formatter.parseLocalDate(date.trim());
 	}
-	
+
 }
-
-

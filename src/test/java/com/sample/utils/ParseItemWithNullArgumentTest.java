@@ -6,7 +6,6 @@ public class ParseItemWithNullArgumentTest {
 
 	@Test(expected = NullPointerException.class)
     public void parseFridgeItem_ShouldThrowException_WhenItemArgumentIsNull() {
-		System.out.println(" Tested null ");
-        ItemParser.parseFridgeItem(null);
+		ItemParser.parseFridgeItem(null);
     }   
 }

@@ -38,6 +38,10 @@ public class FridgeRepositoryTest {
         repository = FridgeRepository.instance();
     }
 
+    /**
+     * Below method tests adding of items to repository and ensures only added 
+     * items are available and clears old items
+     */
     @Test
     public void update_shouldRemoveItems_BeforeAddingNewOnes() {
         repository.update(ITEMS_ONE);
@@ -49,6 +53,9 @@ public class FridgeRepositoryTest {
         assertThat(itemsTwo).hasSize(2).containsAll(ITEMS_TWO);
     }
 
+    /**
+     * To test duplicate items insertion
+     */
     @Test
     public void update_shouldOverrideDuplicatedItems() {
         repository.update(ITEMS_THREE);
@@ -56,6 +63,9 @@ public class FridgeRepositoryTest {
         assertThat(items).hasSize(2).contains(ITEMS_THREE.get(0)).contains(ITEMS_THREE.get(2));
     }
 
+    /**
+     * To test remove functionality of repository
+     */
     @Test
     public void removeAll_shouldClearTheRepository() {
         repository.update(ITEMS_ONE);

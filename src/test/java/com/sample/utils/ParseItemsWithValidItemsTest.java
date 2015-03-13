@@ -15,8 +15,6 @@ import com.sample.models.FridgeItem;
 @RunWith(Parameterized.class)
 public class ParseItemsWithValidItemsTest {
 
-	
-	
 	@Parameters
 	public static Collection<Object[]> validItems() {
 

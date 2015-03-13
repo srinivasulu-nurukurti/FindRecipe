@@ -2,7 +2,6 @@ package com.sample.collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -22,15 +21,24 @@ public class RecipesRepositoryTest {
     private static final List<Recipe> RECIPE_ONE = Lists.newArrayList(
             new Recipe("cheese sand wich ", RECIPE_ONE_ITEMS ));
             		
+    
+    private static final List<Item> RECIPE_TWO_ITEMS = Lists.newArrayList(
+			(new Item("guava", 8300, Unit.GRAMS)),
+			(new Item("rice", 1000, Unit.ML)));
+			
+    private static final List<Recipe> RECIPE_TWO = Lists.newArrayList(
+            new Recipe("rice and guava ", RECIPE_TWO_ITEMS ));
+    
+    private static final List<Item> RECIPE_THREE_ITEMS = Lists.newArrayList(
+			(new Item("guava", 8300, Unit.GRAMS)),
+			(new Item("rice", 500, Unit.ML)),
+			(new Item("rice", 700, Unit.ML)));
+			
+    private static final List<Recipe> RECIPE_THREE = Lists.newArrayList(
+            new Recipe("rice and guava ", RECIPE_THREE_ITEMS ),
+            new Recipe("rice and guava ", RECIPE_TWO_ITEMS )
+    		);
 
-//    private static final List<Recipe> RECIPE_TWO = Lists.newArrayList(
-//            new Recipe("guava", 8300, Unit.GRAMS, FORMATTER.parseLocalDate("25/03/2014")),
-//            new Recipe("rice", 500, Unit.ML, FORMATTER.parseLocalDate("25/12/2015")));
-//
-//    private static final List<Recipe> RECIPE_THREE = Lists.newArrayList(
-//            new Recipe("guava", 8300, Unit.GRAMS, FORMATTER.parseLocalDate("25/03/2014")),
-//            new Recipe("rice", 500, Unit.ML, FORMATTER.parseLocalDate("25/12/2015")),
-//            new Recipe("rice", 700, Unit.ML, FORMATTER.parseLocalDate("22/12/2015")));
 
     private RecipesRepository repository;
 
@@ -39,6 +47,10 @@ public class RecipesRepositoryTest {
         repository = RecipesRepository.instance();
     }
 
+    /**
+     * Below method tests adding of items to repository and ensures only added 
+     * items are available and clear old items
+     */
     @Test
     public void update_shouldRemoveItems_BeforeAddingNewOnes() {
         repository.update(RECIPE_ONE);
@@ -48,27 +60,43 @@ public class RecipesRepositoryTest {
         List<Item> itemsInRecipe = recipeList.get(0).getIngredients();
         assertThat(itemsInRecipe).hasSize(2).containsAll(RECIPE_ONE_ITEMS);
         
-
-//        repository.update(ITEMS_TWO);
-//        List<FridgeItem> itemsTwo = repository.get();
-//        assertThat(itemsTwo).hasSize(2).containsAll(ITEMS_TWO);
+        repository.update(RECIPE_TWO);
+        List<Recipe> recipeListTwo = repository.get();
+        assertThat(recipeListTwo).hasSize(1).containsAll(RECIPE_TWO);
+        
+        List<Item> itemsInRecipeTwo = recipeListTwo.get(0).getIngredients();
+        assertThat(itemsInRecipeTwo).hasSize(2).containsAll(RECIPE_TWO_ITEMS);
+        
     }
 
-//    @Test
-//    public void update_shouldOverrideDuplicatedItems() {
-//        repository.update(ITEMS_THREE);
-//        List<FridgeItem> items = repository.get();
-//        assertThat(items).hasSize(2).contains(ITEMS_THREE.get(0)).contains(ITEMS_THREE.get(2));
-//    }
-//
-//    @Test
-//    public void removeAll_shouldClearTheRepository() {
-//        repository.update(ITEMS_ONE);
-//        assertThat(repository.isEmpty()).isFalse();
-//        assertThat(repository.get()).hasSize(2);
-//
-//        repository.removeAll();
-//        assertThat(repository.isEmpty()).isTrue();
-//        assertThat(repository.get()).isEmpty();
-//    }
+    
+    /**
+     * To test duplicate items insertion and only latest items
+     * are available 
+     */
+    @Test
+    public void update_shouldOverrideDuplicatedItems() {
+        repository.update(RECIPE_THREE);
+        List<Recipe> items = repository.get();
+        assertThat(items).hasSize(1).contains(RECIPE_THREE.get(1));
+        
+        List<Item> itemsInRecipe = items.get(0).getIngredients();
+        assertThat(itemsInRecipe).hasSize(2).contains(RECIPE_TWO_ITEMS.get(1));
+        
+    }
+
+    
+    /**
+     * To test remove functionality of repository
+     */
+    @Test
+    public void removeAll_shouldClearTheRepository() {
+        repository.update(RECIPE_THREE);
+        assertThat(repository.isEmpty()).isFalse();
+        assertThat(repository.get()).hasSize(1);
+
+        repository.removeAll();
+        assertThat(repository.isEmpty()).isTrue();
+        assertThat(repository.get()).isEmpty();
+    }
 }

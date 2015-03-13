@@ -31,7 +31,7 @@ public final class CSVParser {
             }
         } catch (IllegalArgumentException | NullPointerException e) {
             String message = "Failed to parse line " + currentRow + ". " + e.getMessage();
-            LOGGER.error(message, e);
+            LOGGER.error(message);
             throw new IllegalArgumentException(message, e);
         }
 

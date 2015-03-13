@@ -5,7 +5,7 @@ import com.sample.collection.RecipesRepository;
 import com.sample.models.FridgeItem;
 import com.sample.models.Item;
 import com.sample.models.Recipe;
-import com.sample.models.RecipeItem;
+import com.sample.models.RecipePack;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -37,10 +37,10 @@ public class MsgHelper {
     }
 
     private static Message findRecipe() {
-        List<RecipeItem> recipesList = new ArrayList<>();
+        List<RecipePack> recipesList = new ArrayList<>();
         for (Recipe recipe : RecipesRepository.instance().get()) {
             boolean foundRecipe = true;
-            RecipeItem recipeItem = new RecipeItem(recipe);
+            RecipePack recipeItem = new RecipePack(recipe);
 
             for (Item ingredient : recipe.getIngredients()) {
                 FridgeItem fridgeItem = FridgeRepository.instance().getItem(ingredient.getItem());
@@ -59,7 +59,7 @@ public class MsgHelper {
                 : findBestMatch(recipesList);
     }
 
-    private static boolean isValid(FridgeItem item, Item ingredient, RecipeItem recipeItem) {
+    private static boolean isValid(FridgeItem item, Item ingredient, RecipePack recipeItem) {
         if (item == null
                 || !item.getUnit().equals(ingredient.getUnit())
                 || item.getAmount() < ingredient.getAmount())
@@ -74,16 +74,16 @@ public class MsgHelper {
         return true;
     }
 
-    private static Message findBestMatch(List<RecipeItem> recipeItemList) {
-        Iterator<RecipeItem> it = recipeItemList.iterator();
+    private static Message findBestMatch(List<RecipePack> recipeItemList) {
+        Iterator<RecipePack> it = recipeItemList.iterator();
         return suggestedRecipe(findBestMatch(it.next(), it).getRecipe());
     }
 
-    private static RecipeItem findBestMatch(RecipeItem current, Iterator<RecipeItem> it) {
+    private static RecipePack findBestMatch(RecipePack current, Iterator<RecipePack> it) {
         if (!it.hasNext())
             return current;
 
-        RecipeItem next = it.next();
+        RecipePack next = it.next();
 
         Iterator<Integer> currentIt = current.getClosestDays().iterator();
         Iterator<Integer> nextIt = next.getClosestDays().iterator();

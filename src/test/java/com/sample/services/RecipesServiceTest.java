@@ -16,6 +16,8 @@ import com.google.common.collect.Lists;
 import com.sample.collection.RecipesRepository;
 import com.sample.models.Item;
 import com.sample.models.Recipe;
+import com.sample.utils.Unit;
+
 
 public class RecipesServiceTest {
 
@@ -43,24 +45,15 @@ public class RecipesServiceTest {
     @Test
     public void addRecipe_shouldPopulateTheRepository() {
     	
-    	List<Item> RECIPE_ONE_ITEMS = Lists.newArrayList(
-    			(new Item()),(new Item()));
+    	List<Item> RECIPE_ITEMS = Lists.newArrayList(
+    			(new Item("bread" ,  8, Unit.SLICES)),
+    			(new Item("cheese", 10, Unit.SLICES)));
     			
-        List<Recipe> RECIPE_ONE = Lists.newArrayList(
-                new Recipe("cheese sand wich ", RECIPE_ONE_ITEMS ));
+        List<Recipe> RECIPE = Lists.newArrayList(
+                new Recipe("cheese sand wich ", RECIPE_ITEMS ));
         
-        service.add(RECIPE_ONE);
+        service.add(RECIPE);
         assertThat(RecipesRepository.instance().get()).hasSize(1);
     }
 
-//    @Test
-//    public void addItems_shouldPopulateTheRepository() throws IOException {
-//        String csv = "bread,10,slices,25/12/2014\n" +
-//                     "cheese,10,slices,25/12/2014";
-//
-//        FridgeRepository.instance().removeAll();
-//
-//        service.addItems(csv);
-//        assertThat(FridgeRepository.instance().get()).hasSize(2);
-//    }
 }

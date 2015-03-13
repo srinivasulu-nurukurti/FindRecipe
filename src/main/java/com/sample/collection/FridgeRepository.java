@@ -20,7 +20,7 @@ public final class FridgeRepository {
     
     public synchronized void update(List<FridgeItem> items) {
 
-        // Previous items are removed from the collection and updated with new item
+        // Previous items are removed from the collection and updated with new items
         removeAll();
 
         // Duplicated items are overridden

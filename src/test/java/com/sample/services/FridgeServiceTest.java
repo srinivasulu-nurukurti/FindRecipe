@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.sample.collection.FridgeRepository;
 
+
 public class FridgeServiceTest {
 
     private FridgeService service;
@@ -38,8 +39,10 @@ public class FridgeServiceTest {
     @Test(expected = WebApplicationException.class)
     public void addItems_shouldThrowAnException_WhenCsvIsInvalid() throws IOException {
         String invalidCsv = "bread,10,slices,25/12/2014\n" +
-                            "cheese,10,slices,25/12/2014, unexpected-column";
-
+                            "cheese,10,slices,25/12/2014, unexpected-column\n"+
+                            "bread,10,slices,25/13/2014";
+                            
+                            
         service.addItems(invalidCsv);
         fail("Adding items should have failed!");
     }

@@ -2,11 +2,11 @@ package com.sample.models;
 
 import java.util.TreeSet;
 
-public class RecipeItem {
+public class RecipePack {
 	final Recipe recipe;
 	final TreeSet<Integer> closestDays = new TreeSet<>();
 
-	public RecipeItem(Recipe recipe) {
+	public RecipePack(Recipe recipe) {
 		this.recipe = recipe;
 	}
 
